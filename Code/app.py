@@ -1,26 +1,24 @@
 from flask import Flask
 from Code.backend.models import db, User
 
-def setup_app():
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'secret'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/household_services.db'
+app = Flask(__name__)
 
-    db.init_app(app)
+app.config['SECRET_KEY'] = 'secret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/household_services.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    app.app_context().push()
-
-    app.debug = True
-
-    print("App is setup")
-
-    return app
-
+db.init_app(app)
 
 # IMPORTANT
-app = setup_app()
+import Code.backend.controllers
 
-from Code.backend.controllers import *
+print("App is setup")
+
+
+@app.route("/")
+def test():
+    return "App working"
+
 
 if __name__ == '__main__':
     with app.app_context():
