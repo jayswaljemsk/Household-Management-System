@@ -14,7 +14,7 @@ with app.app_context():
         db.session.add(admin)
         db.session.commit()
 
-from backend.controllers import *
+from Code.backend.controllers import *
 
 if __name__ == '__main__':
     app.run()
