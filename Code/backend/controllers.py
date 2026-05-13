@@ -1,6 +1,6 @@
 from flask import request, session, render_template, redirect, url_for
-from flask import current_app as app
-from .models import *
+from Code.app import app
+from Code.models import *
 from datetime import datetime
 import matplotlib 
 matplotlib.use('Agg')
