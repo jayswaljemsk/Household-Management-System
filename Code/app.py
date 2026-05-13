@@ -1,5 +1,5 @@
 from flask import Flask
-from backend.models import db, User
+from Code.backend.models import db, User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
