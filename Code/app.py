@@ -1,29 +1,28 @@
-import os
-import sys
-import tempfile
 from flask import Flask
+from Code.backend.models import db, User
 
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+app = None
 
-from backend.models import db, User
+def setup_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'secret'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///household_services.db'
+    db.init_app(app)
+    app.app_context().push()
+    app.debug = True
+    print("App is setup")
 
-instance_dir = os.path.join(tempfile.gettempdir(), 'instance')
-os.makedirs(instance_dir, exist_ok=True)
+# call the setup
+setup_app()
 
-app = Flask(__name__, instance_path=instance_dir)
-app.config['SECRET_KEY'] = 'secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/household_services.db'
-db.init_app(app)
-
-with app.app_context():
-    db.create_all()
-    admin = User.query.filter_by(role='admin').first()
-    if not admin:
-        admin = User(email='admin@gmail.com', password='123', role='admin', user_status='active')
-        db.session.add(admin)
-        db.session.commit()
-
-from backend.controllers import *
+from Code.backend.controllers import *
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+        admin = User.query.filter_by(role='admin').first()
+        if not admin:
+            admin = User(email='admin@gmail.com', password='123',role='admin',user_status='active')
+            db.session.add(admin)
+            db.session.commit()
     app.run()
