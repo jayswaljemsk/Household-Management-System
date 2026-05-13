@@ -6,7 +6,7 @@ app = None
 def setup_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///household_services.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/household_services.db'
     db.init_app(app)
     app.app_context().push()
     app.debug = True
